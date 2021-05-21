@@ -101,6 +101,7 @@ public class MatcherFilter implements Filter {
     //CS304 Issue link: https://github.com/perwendel/spark/issues/1056
     //CS304 Issue link: https://github.com/perwendel/spark/issues/1026
     //CS304 Issue link: https://github.com/perwendel/spark/issues/1077
+    //CS304 Issue link: https://github.com/perwendel/spark/issues/1226
     //CS304 Issue link: https://github.com/perwendel/spark/issues/986
     @Override
     public void doFilter(ServletRequest servletRequest,
@@ -192,14 +193,17 @@ public class MatcherFilter implements Filter {
             }
 
             if (body.notSet()) {
+                int returnStatus;
+                if(httpMethodStr.equals("put") && response.status() == 200) returnStatus = HttpServletResponse.SC_METHOD_NOT_ALLOWED;
+                else returnStatus = HttpServletResponse.SC_NOT_FOUND;
                 LOG.info("The requested route [{}] has not been mapped in Spark for {}: [{}]",
-                    uri, ACCEPT_TYPE_REQUEST_MIME_HEADER, acceptType);
-                httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                         uri, ACCEPT_TYPE_REQUEST_MIME_HEADER, acceptType);
+                httpResponse.setStatus(returnStatus);
 
-                if (CustomErrorPages.existsFor(404)) {
+                if (CustomErrorPages.existsFor(returnStatus)) {
                     requestWrapper.setDelegate(RequestResponseFactory.create(httpRequest));
                     responseWrapper.setDelegate(RequestResponseFactory.create(httpResponse));
-                    body.set(CustomErrorPages.getFor(404, requestWrapper, responseWrapper));
+                    body.set(CustomErrorPages.getFor(returnStatus, requestWrapper, responseWrapper));
                 } else {
                     body.set(String.format(CustomErrorPages.NOT_FOUND));
                 }
