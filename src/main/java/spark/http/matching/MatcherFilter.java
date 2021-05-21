@@ -103,6 +103,7 @@ public class MatcherFilter implements Filter {
     //CS304 Issue link: https://github.com/perwendel/spark/issues/1077
     //CS304 Issue link: https://github.com/perwendel/spark/issues/1226
     //CS304 Issue link: https://github.com/perwendel/spark/issues/986
+    //CS304 Issue link: https://github.com/perwendel/spark/issues/688
     @Override
     public void doFilter(ServletRequest servletRequest,
                          ServletResponse servletResponse,
