@@ -26,14 +26,14 @@ public class Test1026 {
         awaitInitialization();
     }
 
-    // CS304 Issue link: https://github.com/perwendel/spark/issues/1026
+    // CS304 (manually written) Issue link: https://github.com/perwendel/spark/issues/1026
     @Test
     public void testUrl1() throws Exception {
         SparkTestUtil.UrlResponse response = http.get(ROUTE1);
         assertEquals(200, response.status);
     }
 
-    // CS304 Issue link: https://github.com/perwendel/spark/issues/1026
+    // CS304 (manually written) Issue link: https://github.com/perwendel/spark/issues/1026
     @Test
     public void testUrl2() throws Exception {
         SparkTestUtil.UrlResponse response = http.get(ROUTE2);

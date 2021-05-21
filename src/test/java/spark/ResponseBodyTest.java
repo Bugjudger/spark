@@ -120,7 +120,7 @@ public class ResponseBodyTest {
     }
 
     // Try to fix issue 1226: https://github.com/perwendel/spark/issues/1226
-    // CS304 Issue link: https://github.com/perwendel/spark/issues/1226
+    // CS304 (manually written) Issue link: https://github.com/perwendel/spark/issues/1226
     @Test
     public void testMethodNotAllowed() {
         try {
