@@ -92,9 +92,9 @@ public class MatcherFilter implements Filter {
     /**
      * Filter route
      *
-     * @param servletRequest    The Request
-     * @param servletResponse   The Response
-     * @param chain             The FilterChain, to do filter when body is not set and chain is not null.
+     * @param servletRequest  The Request
+     * @param servletResponse The Response
+     * @param chain           The FilterChain, to do filter when body is not set and chain is not null.
      * @throws IOException      IOException
      * @throws ServletException ServletException
      */
@@ -102,6 +102,7 @@ public class MatcherFilter implements Filter {
     //CS304 Issue link: https://github.com/perwendel/spark/issues/1026
     //CS304 Issue link: https://github.com/perwendel/spark/issues/1077
     //CS304 Issue link: https://github.com/perwendel/spark/issues/1226
+    //CS304 Issue link: https://github.com/perwendel/spark/issues/986
     @Override
     public void doFilter(ServletRequest servletRequest,
                          ServletResponse servletResponse,
@@ -126,16 +127,21 @@ public class MatcherFilter implements Filter {
 
         String acceptType = httpRequest.getHeader(ACCEPT_TYPE_REQUEST_MIME_HEADER);
 
-        List<RouteMatch> routes=routeMatcher.findAll();
-        String firstAcceptType=null;
-        for (RouteMatch rm:routes) {
-            if(rm.getMatchUri().equals(uri)){
-                firstAcceptType=rm.getAcceptType();
+        List<RouteMatch> routes = routeMatcher.findAll();
+        String firstAcceptType = null;
+        for (RouteMatch rm : routes) {
+            if (rm.getMatchUri().equals(uri)) {
+                firstAcceptType = rm.getAcceptType();
                 break;
             }
         }
-        if(acceptType.equals("*/*")&&firstAcceptType!=null){
-            acceptType=firstAcceptType;
+        if ("*/*".equals(acceptType) && firstAcceptType != null) {
+            acceptType = firstAcceptType;
+        }
+
+        if (!acceptType.contains(";q=") && acceptType.endsWith("*/*")) {
+            //It is from IE
+            acceptType = acceptType.substring(0, acceptType.indexOf(", */*")) + ";q=0.9,*/*;q=0.8";
         }
 
         Body body = Body.create();
@@ -148,15 +154,15 @@ public class MatcherFilter implements Filter {
         HttpMethod httpMethod = HttpMethod.get(httpMethodStr);
 
         RouteContext context = RouteContext.create()
-                .withMatcher(routeMatcher)
-                .withHttpRequest(httpRequest)
-                .withUri(uri)
-                .withAcceptType(acceptType)
-                .withBody(body)
-                .withRequestWrapper(requestWrapper)
-                .withResponseWrapper(responseWrapper)
-                .withResponse(response)
-                .withHttpMethod(httpMethod);
+            .withMatcher(routeMatcher)
+            .withHttpRequest(httpRequest)
+            .withUri(uri)
+            .withAcceptType(acceptType)
+            .withBody(body)
+            .withRequestWrapper(requestWrapper)
+            .withResponseWrapper(responseWrapper)
+            .withResponse(response)
+            .withHttpMethod(httpMethod);
 
         try {
             try {
@@ -171,26 +177,19 @@ public class MatcherFilter implements Filter {
             } catch (Exception generalException) {
 
                 GeneralError.modify(
-                        httpRequest,
-                        httpResponse,
-                        body,
-                        requestWrapper,
-                        responseWrapper,
-                        exceptionMapper,
-                        generalException);
+                    httpRequest,
+                    httpResponse,
+                    body,
+                    requestWrapper,
+                    responseWrapper,
+                    exceptionMapper,
+                    generalException);
 
             }
 
             // If redirected and content is null set to empty string to not throw NotConsumedException
             if (body.notSet() && responseWrapper.isRedirected()) {
                 body.set("");
-            }
-
-            if (body.notSet() && hasOtherHandlers) {
-                if (servletRequest instanceof HttpRequestWrapper) {
-                    ((HttpRequestWrapper) servletRequest).notConsumed(true);
-                    return;
-                }
             }
 
             if (body.notSet()) {
@@ -214,13 +213,13 @@ public class MatcherFilter implements Filter {
                 AfterAfterFilters.execute(context);
             } catch (Exception generalException) {
                 GeneralError.modify(
-                        httpRequest,
-                        httpResponse,
-                        body,
-                        requestWrapper,
-                        responseWrapper,
-                        exceptionMapper,
-                        generalException);
+                    httpRequest,
+                    httpResponse,
+                    body,
+                    requestWrapper,
+                    responseWrapper,
+                    exceptionMapper,
+                    generalException);
             }
         }
 
