@@ -33,7 +33,7 @@ public class Issue688Test {
     }
 
 
-    // Try to fix issue 688: https://github.com/perwendel/spark/issues/688
+    // CS304 (manually written) Issue link: https://github.com/perwendel/spark/issues/688
     @Test
     public void testWheteherMatchRight() {
 

@@ -55,7 +55,7 @@ public class Issue1077Test {
         });
     }
 
-    // CS304 Issue link: https://github.com/perwendel/spark/issues/1077
+    // CS304 (manually written) Issue link: https://github.com/perwendel/spark/issues/1077
     @Test
     public void testWheteherMatchRight() {
 
@@ -82,7 +82,7 @@ public class Issue1077Test {
         }
     }
 
-    // CS304 Issue link: https://github.com/perwendel/spark/issues/1077
+    // CS304 (manually written) Issue link: https://github.com/perwendel/spark/issues/1077
     @Test
     public void testWhetherMatchFirst() {
         try {
