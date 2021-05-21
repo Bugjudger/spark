@@ -27,7 +27,7 @@ public class RequestTest {
     private static final String AFTER_MATCHED_ROUTE = "/users/:after";
     private static final String AFTERAFTER_MATCHED_ROUTE = "/users/:afterafter";
 
-    private static final SparkTestUtil http = new SparkTestUtil(4567);;
+    private static final SparkTestUtil HTTP = new SparkTestUtil(4567);;
 
     HttpServletRequest servletRequest;
     HttpSession httpSession;
@@ -123,7 +123,7 @@ public class RequestTest {
         Request request = new Request(matchWithParams, servletRequest);
         assertEquals("Should have returned the matched route", THE_MATCHED_ROUTE, request.matchedPath());
         try {
-            http.get("/users/bob");
+            HTTP.get("/users/bob");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -135,7 +135,7 @@ public class RequestTest {
         Request request = new Request(matchWithParams, servletRequest);
         assertEquals("Should have returned the matched route", THE_MATCHED_ROUTE, request.matchedPath());
         try {
-            http.get("/users/bob/");
+            HTTP.get("/users/bob/");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -147,7 +147,7 @@ public class RequestTest {
         Request request = new Request(match, servletRequest);
         assertEquals("Should have returned the matched route", "/hi", request.matchedPath());
         try {
-            http.get("/hi/");
+            HTTP.get("/hi/");
         } catch (Exception e) {
             e.printStackTrace();
         }

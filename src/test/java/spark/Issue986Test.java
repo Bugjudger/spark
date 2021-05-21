@@ -29,7 +29,7 @@ public class Issue986Test {
 
     public static final String OTHER = "/:param";
 
-    private static final SparkTestUtil http = new SparkTestUtil(4567);
+    private static final SparkTestUtil HTTP = new SparkTestUtil(4567);
 
     @AfterClass
     public static void tearDown() {
@@ -50,7 +50,7 @@ public class Issue986Test {
     @Test
     public void testUrl1() throws Exception {
         try {
-            SparkTestUtil.UrlResponse response = http.doMethod("GET",HELLO, "");
+            SparkTestUtil.UrlResponse response = HTTP.doMethod("GET",HELLO, "");
             assertEquals(200, response.status);
             assertEquals("Hello!",response.body);
         }
@@ -63,7 +63,7 @@ public class Issue986Test {
     @Test
     public void testUrl2() throws Exception {
         try {
-            SparkTestUtil.UrlResponse response = http.doMethod("GET","/aya", "");
+            SparkTestUtil.UrlResponse response = HTTP.doMethod("GET","/aya", "");
             assertEquals(200, response.status);
             assertEquals("other",response.body);
         }
@@ -76,7 +76,7 @@ public class Issue986Test {
     @Test
     public void testUrl3() throws Exception {
         try {
-            SparkTestUtil.UrlResponse response = http.doMethod("GET","/chat", "");
+            SparkTestUtil.UrlResponse response = HTTP.doMethod("GET","/chat", "");
             assertEquals(200, response.status);
         }
         catch (Exception e) {
@@ -88,7 +88,7 @@ public class Issue986Test {
     @Test
     public void testUrl4() throws Exception {
         try {
-            SparkTestUtil.UrlResponse response = http.doMethod("GET","/","");
+            SparkTestUtil.UrlResponse response = HTTP.doMethod("GET","/","");
             assertEquals(200, response.status);
             System.out.print(response.body);
         }

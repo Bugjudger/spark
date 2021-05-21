@@ -22,11 +22,10 @@ public class Issue688Test {
 
     public static final int PORT = 4567;
 
-    private static SparkTestUtil http;
+    private static SparkTestUtil http = new SparkTestUtil(PORT);;
 
     @Before
     public void setup() {
-        http = new SparkTestUtil(PORT);
 
         get(HELLO, (request, response) -> "Abstract");
 
@@ -36,7 +35,7 @@ public class Issue688Test {
 
     // Try to fix issue 688: https://github.com/perwendel/spark/issues/688
     @Test
-    public void TestWheteherMatchRight() {
+    public void testWheteherMatchRight() {
 
         try {
             Map<String, String> requestHeader = new HashMap<>();

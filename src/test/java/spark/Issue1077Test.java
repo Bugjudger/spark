@@ -31,7 +31,7 @@ public class Issue1077Test {
 
     public static final int PORT = 4567;
 
-    private static final SparkTestUtil http = new SparkTestUtil(PORT);
+    private static final SparkTestUtil HTTP = new SparkTestUtil(PORT);
 
     @Before
     public void setup() {
@@ -65,15 +65,15 @@ public class Issue1077Test {
             requestHeader.put("User-Agent", "curl/7.55.1");
             requestHeader.put("x-forwarded-host", "proxy.mydomain.com");
 
-            SparkTestUtil.UrlResponse response = http.doMethod("GET",HELLO, "", false, "*/*", requestHeader);
+            SparkTestUtil.UrlResponse response = HTTP.doMethod("GET",HELLO, "", false, "*/*", requestHeader);
             assertEquals(200, response.status);
             assertEquals("Hello application json", response.body);
 
-            response = http.doMethod("GET",HELLO, "", false, "text/json", requestHeader);
+            response = HTTP.doMethod("GET",HELLO, "", false, "text/json", requestHeader);
             assertEquals(200, response.status);
             assertEquals("Hello text json", response.body);
 
-            response = http.doMethod("GET",HELLO, "", false, "text/html*", requestHeader);
+            response = HTTP.doMethod("GET",HELLO, "", false, "text/html*", requestHeader);
             assertEquals(406, response.status);
             assertEquals("Go Away!!!", response.body);
 
@@ -91,11 +91,11 @@ public class Issue1077Test {
             requestHeader.put("User-Agent", "curl/7.55.1");
             requestHeader.put("x-forwarded-host", "proxy.mydomain.com");
 
-            SparkTestUtil.UrlResponse response = http.doMethod("GET",TEST, "", false, "*/*", requestHeader);
+            SparkTestUtil.UrlResponse response = HTTP.doMethod("GET",TEST, "", false, "*/*", requestHeader);
             assertEquals(200, response.status);
             assertEquals("Hello text json", response.body);
 
-            response = http.doMethod("GET",HELLO, "", false, "*/*", requestHeader);
+            response = HTTP.doMethod("GET",HELLO, "", false, "*/*", requestHeader);
             assertEquals(200, response.status);
             assertEquals("Hello application json", response.body);
         } catch (Exception e) {

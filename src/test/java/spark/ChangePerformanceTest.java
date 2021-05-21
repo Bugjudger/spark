@@ -21,11 +21,11 @@ public class ChangePerformanceTest {
 
     public static final int PORT = 4567;
 
-    private static final SparkTestUtil http = new SparkTestUtil(PORT);
+    private static final SparkTestUtil HTTP = new SparkTestUtil(PORT);
 
     private static Map<String, Book> books = new HashMap<String, Book>();
 
-    private static final int testNumber = 1000;
+    private static final int TEST_NUMBER = 1000;
 
     @AfterClass
     public static void tearDown() {
@@ -119,13 +119,13 @@ public class ChangePerformanceTest {
             String author = "Foo";
             String title = "Bar";
             long startTime = System.currentTimeMillis();
-            for (int i = 0; i < testNumber; i++) {
+            for (int i = 0; i < TEST_NUMBER; i++) {
                 String path = BOOKS + "?author=" + author + i + "&title=" + title + i;
-                http.doMethod("POST", path, "", false, "*/*", requestHeader);
+                HTTP.doMethod("POST", path, "", false, "*/*", requestHeader);
             }
             long endTime = System.currentTimeMillis();
-            System.out.println("The time to run the POST method " + testNumber +  " times is: " + (endTime - startTime) + "ms");
-            assertEquals(testNumber, books.size());
+            System.out.println("The time to run the POST method " + TEST_NUMBER +  " times is: " + (endTime - startTime) + "ms");
+            assertEquals(TEST_NUMBER, books.size());
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
@@ -135,9 +135,9 @@ public class ChangePerformanceTest {
     @Test
     public void testPutPerformance() {
         try {
-            assertEquals(testNumber, books.size());
-            String[] booksId = new String[testNumber];
-            String[] reStr = new String[testNumber];
+            assertEquals(TEST_NUMBER, books.size());
+            String[] booksId = new String[TEST_NUMBER];
+            String[] reStr = new String[TEST_NUMBER];
             int cnt = 0;
             for (Map.Entry<String, Book> entry : books.entrySet()) {
                 booksId[cnt++] = entry.getKey();
@@ -148,16 +148,16 @@ public class ChangePerformanceTest {
             String author = "Woo";
             String title = "Tar";
             long startTime = System.currentTimeMillis();
-            for (int i = 0; i < testNumber; i++) {
+            for (int i = 0; i < TEST_NUMBER; i++) {
                 String path = BOOKS + "/" + booksId[i] + "?author=" + author + i + "&title=" + title + i;
-                reStr[i] = http.doMethod("PUT", path, "", false, "*/*", requestHeader).body;
+                reStr[i] = HTTP.doMethod("PUT", path, "", false, "*/*", requestHeader).body;
             }
             long endTime = System.currentTimeMillis();
-            System.out.println("The time to run the PUT method " + testNumber +  " times is: " + (endTime - startTime) + "ms");
-            for (int i = 0; i < testNumber; i++) {
+            System.out.println("The time to run the PUT method " + TEST_NUMBER +  " times is: " + (endTime - startTime) + "ms");
+            for (int i = 0; i < TEST_NUMBER; i++) {
                 assertEquals("Book with id '" + booksId[i] + "' updated", reStr[i]);
             }
-            assertEquals(testNumber, books.size());
+            assertEquals(TEST_NUMBER, books.size());
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
@@ -167,9 +167,9 @@ public class ChangePerformanceTest {
     @Test
     public void testDeletePerformance() {
         try {
-            assertEquals(testNumber, books.size());
-            String[] booksId = new String[testNumber];
-            String[] reStr = new String[testNumber];
+            assertEquals(TEST_NUMBER, books.size());
+            String[] booksId = new String[TEST_NUMBER];
+            String[] reStr = new String[TEST_NUMBER];
             int cnt = 0;
             for (Map.Entry<String, Book> entry : books.entrySet()) {
                 booksId[cnt++] = entry.getKey();
@@ -178,12 +178,12 @@ public class ChangePerformanceTest {
             requestHeader.put("Host", "localhost:" + PORT);
             requestHeader.put("User-Agent", "curl/7.55.1");
             long startTime = System.currentTimeMillis();
-            for (int i = 0; i < testNumber; i++) {
-                reStr[i] = http.doMethod("DELETE", BOOKS + "/" + booksId[i], "", false, "*/*", requestHeader).body;
+            for (int i = 0; i < TEST_NUMBER; i++) {
+                reStr[i] = HTTP.doMethod("DELETE", BOOKS + "/" + booksId[i], "", false, "*/*", requestHeader).body;
             }
             long endTime = System.currentTimeMillis();
-            System.out.println("The time to run the DELETE method " + testNumber +  " times is: " + (endTime - startTime) + "ms");
-            for (int i = 0; i < testNumber; i++) {
+            System.out.println("The time to run the DELETE method " + TEST_NUMBER +  " times is: " + (endTime - startTime) + "ms");
+            for (int i = 0; i < TEST_NUMBER; i++) {
                 assertEquals("Book with id '" + booksId[i] + "' deleted", reStr[i]);
             }
             assertEquals(0, books.size());

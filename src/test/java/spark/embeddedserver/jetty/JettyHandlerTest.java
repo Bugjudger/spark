@@ -22,7 +22,7 @@ public class JettyHandlerTest {
 
     public static final String HELLO_WORLD = "Hello World!";
 
-    private static final SparkTestUtil http = new SparkTestUtil(4567);
+    private static final SparkTestUtil HTTP = new SparkTestUtil(4567);
 
     @AfterClass
     public static void tearDown() {
@@ -55,7 +55,7 @@ public class JettyHandlerTest {
             requestHeader.put("Host", "localhost:" + PORT);
             requestHeader.put("User-Agent", "curl/7.55.1");
             requestHeader.put("x-forwarded-host", "proxy.mydomain.com");
-            SparkTestUtil.UrlResponse response = http.doMethod("GET",HELLO, "", false, "*/*", requestHeader);
+            SparkTestUtil.UrlResponse response = HTTP.doMethod("GET",HELLO, "", false, "*/*", requestHeader);
 
             assertEquals(200, response.status);
             assertEquals(HELLO_WORLD, response.body);
@@ -72,7 +72,7 @@ public class JettyHandlerTest {
             requestHeader.put("Host", "localhost:" + PORT);
             requestHeader.put("User-Agent", "curl/7.55.1");
             requestHeader.put("x-forwarded-host", "proxy.mydomain.com");
-            SparkTestUtil.UrlResponse response = http.doMethod("POST",HELLO, "", false, "*/*", requestHeader);
+            SparkTestUtil.UrlResponse response = HTTP.doMethod("POST",HELLO, "", false, "*/*", requestHeader);
 
             assertEquals(200, response.status);
             assertEquals(HELLO_WORLD, response.body);
