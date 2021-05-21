@@ -143,15 +143,16 @@ public class Request {
      * @param param the param
      * @return null if the given param is null or not found
      */
+    //CS304 Issue link: https://github.com/perwendel/spark/issues/339
     public String params(String param) {
         if (param == null) {
             return null;
         }
 
         if (param.startsWith(":")) {
-            return params.get(param.toLowerCase()); // NOSONAR
+            return params.get(param.substring(1).toLowerCase()); // NOSONAR
         } else {
-            return params.get(":" + param.toLowerCase()); // NOSONAR
+            return params.get(param.toLowerCase()); // NOSONAR
         }
     }
 
@@ -516,6 +517,7 @@ public class Request {
         return servletRequest.getProtocol();
     }
 
+    //CS304 Issue link: https://github.com/perwendel/spark/issues/339
     private static Map<String, String> getParams(List<String> request, List<String> matched) {
         Map<String, String> params = new HashMap<>();
 
@@ -531,7 +533,12 @@ public class Request {
                                   + " = "
                                   + decodedReq);
 
-                params.put(matchedPart.toLowerCase(), decodedReq);
+                if (matchedPart.startsWith(":")) {
+                    params.put(matchedPart.substring(1).toLowerCase(), decodedReq);
+                }
+                else {
+                    params.put(matchedPart.toLowerCase(), decodedReq);
+                }
             }
         }
         return Collections.unmodifiableMap(params);
